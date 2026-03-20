@@ -3,6 +3,12 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Skill](https://img.shields.io/badge/opencode-skill-purple)](https://opencode.ai)
 
+## TLDR: One-shot prompt to get started
+Run this command to begin your first Lean Loop cycle:
+```
+opencode "Implement a greet(name) function that returns 'Hello, {name}!': Start with PLAN phase"
+```
+
 A disciplined heartbeat cycle for AI-assisted and human-driven TDD development.
 
 ```
