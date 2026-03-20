@@ -1,10 +1,29 @@
-# Lean Loop: Lightweight TDD System
+# Lean Loop
 
-A disciplined heartbeat cycle (PLAN → APPLY → UNIFY) for building software with acceptance-criteria-driven development, strict TDD, and mandatory reconciliation.
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Skill](https://img.shields.io/badge/opencode-skill-purple)](https://opencode.ai)
 
-## Installation
+A disciplined heartbeat cycle for AI-assisted and human-driven TDD development.
 
-### As an opencode / Claude skill (recommended)
+```
+    PLAN ──────► APPLY ──────► UNIFY
+     ▲                              │
+     └──────────────────────────────┘
+```
+
+## Why Lean Loop?
+
+AI coding assistants are powerful but chaotic. They write code fast, skip tests, lose context, and rarely reconcile what was planned vs. what was built. Lean Loop fixes that with three simple rules:
+
+- **Plan before you code.** Define acceptance criteria before touching any file.
+- **Test every behavior.** Strict Red-Green-Refactor, one test at a time.
+- **Reconcile every cycle.** Compare plan vs. actual, log decisions, update state.
+
+The result: predictable, auditable, test-covered development — whether you're working solo, with a team, or alongside an AI.
+
+## Quick Start
+
+### Install as an opencode skill
 
 ```bash
 npx skills add oxyplay/lean-loop -g
@@ -12,48 +31,67 @@ npx skills add oxyplay/lean-loop -g
 
 The skill auto-creates `.system/` tracking files in your project on first use.
 
-### Manual
-
-Copy the `.system/` directory into your project root:
+### Manual setup
 
 ```bash
 cp -r .system/ /path/to/your/project/.system/
 ```
 
-## Philosophy
-- **In-Session Context:** All implementation happens in the main session to maintain 100% quality and avoid subagent launch costs.
-- **Vertical Slicing:** Build one behavior end-to-end (Tracer Bullets) rather than horizontal layers.
-- **Acceptance-Driven:** Define "Done" via clear Acceptance Criteria (AC) before writing any code.
-- **Behavior-First TDD:** Tests verify what the system does through public interfaces, not internal implementation details.
+### Your first loop (60 seconds)
 
-## The Heartbeat: PLAN → APPLY → UNIFY
+1. Open `.system/PLAN.md` and write:
+   - **Objective:** "Add a `greet(name)` function that returns `Hello, {name}!`"
+   - **AC:** `Given name="World", When greet() called, Then returns "Hello, World!"`
+2. Open `.system/TDD_RULES.md` — follow Red-Green-Refactor
+3. Write one failing test → make it green → refactor
+4. Open `.system/STATE.md` — update phase, log what you did, set next action
+5. Repeat
 
-Operational state and artifacts are stored in the `.system/` folder.
+## The Heartbeat
 
-1. **PLAN:** Define Objective, Acceptance Criteria (Given/When/Then), and specific Tasks.
-   > **Rule:** If ACs are unclear, contradictory, or untestable — stop and refine the PLAN. Do not proceed to APPLY.
+Operational state lives in the `.system/` folder.
 
-2. **APPLY:** Execute Red-Green-Refactor cycles strictly following TDD_RULES.md.
-   > **Strict APPLY Checklist (one behavior at a time):**
-   > - Only **one** test for **one** behavior
-   > - Confirm RED using actual console output
-   > - Write minimal code to make it GREEN (no future-proofing)
-   > - Refactor **only** after GREEN
-   > - **Smallest Viable Change:** Touch the fewest files possible. If the task starts expanding beyond original ACs — stop and return to PLAN.
+```mermaid
+graph LR
+    PLAN["PLAN<br/><i>Define objective,<br/>write ACs, break tasks</i>"]
+    APPLY["APPLY<br/><i>Red → Green → Refactor<br/>one behavior at a time</i>"]
+    UNIFY["UNIFY<br/><i>Reconcile plan vs actual,<br/>update state, log decisions</i>"]
+    PLAN --> APPLY --> UNIFY --> PLAN
+```
 
-3. **UNIFY:** Mandatory reconciliation. Compare plan vs. actual, log decisions, and update state.
-   > **Definition of Done:**
-   > 1. All tests are green.
-   > 2. All Acceptance Criteria are fully satisfied.
-   > 3. `STATE.md` is updated.
-   > 4. Any RED phase failures are documented in the 💥 Failure Log section of `.system/LOG.md` (based on console facts only).
+### Phase 1: PLAN
 
-   > **UNIFY Template:**
-   > - **Planned:** [brief description]
-   > - **Actually done:** [what was changed]
-   > - **AC satisfied:** [list]
-   > - **Deferred / Technical Debt:** [if any]
-   > - **Next Action:** [exactly one task]
+Fill in `.system/PLAN.md` with objective, Given/When/Then acceptance criteria, boundaries, and task breakdown.
+
+> **Gate:** If ACs are unclear, contradictory, or untestable — stop and refine. Do not proceed to APPLY.
+
+### Phase 2: APPLY
+
+Execute Red-Green-Refactor cycles strictly:
+
+1. **RED** — Write ONE failing test. Confirm with actual console output.
+2. **GREEN** — Minimal code to pass. No future-proofing.
+3. **REFACTOR** — Improve design only when green.
+
+> **Rule:** If work expands beyond original ACs — stop and return to PLAN.
+
+### Phase 3: UNIFY
+
+Mandatory reconciliation after every APPLY session:
+
+1. All tests green? Run the full suite.
+2. All ACs satisfied? Check each one explicitly.
+3. Update `.system/STATE.md` with current phase and next action.
+4. Log decisions and debt in `.system/LOG.md`.
+5. Compare planned vs. actually done.
+
+```
+- **Planned:** [what you set out to do]
+- **Actually done:** [what changed]
+- **AC satisfied:** [each AC and whether met]
+- **Deferred / Debt:** [if any]
+- **Next Action:** [exactly one task]
+```
 
 ## Project Structure
 
@@ -67,15 +105,46 @@ your-project/
 └── ...
 ```
 
-## How It Works
+## Philosophy
 
-1. **PLAN** — Fill in `PLAN.md`: define objective, write Given/When/Then acceptance criteria, list boundaries, break into tasks
-2. **APPLY** — Follow `TDD_RULES.md`: one failing test at a time, minimal code to pass, refactor only when green
-3. **UNIFY** — Reconcile: verify all ACs met, update `STATE.md` with next action, log decisions in `LOG.md`
-4. **Repeat** — Return to PLAN for the next task
+- **In-Session Context** — All work happens in the main session. No subagent handoffs during implementation.
+- **Vertical Slicing** — Build one behavior end-to-end (Tracer Bullets), not horizontal layers.
+- **Acceptance-Driven** — Define "Done" via clear criteria before writing code.
+- **Behavior-First TDD** — Test public interfaces, not internal implementation.
+- **Deep Modules** — Small public interfaces that hide complex internals.
+
+## When to Break TDD
+
+Rare exceptions, all must be logged in `.system/LOG.md`:
+
+- **Hotfixes** — production bugs requiring immediate recovery
+- **Legacy Code** — too tightly coupled for test-first approach
+- **Spikes** — exploratory code, will be thrown away
+
+## FAQ
+
+**Q: Do I need opencode to use this?**
+A: No. The `.system/` templates work with any editor. The opencode skill just auto-initializes them.
+
+**Q: Can I use this with my team?**
+A: Yes. Commit `.system/` to your repo. Everyone shares the same plan, state, and decision log.
+
+**Q: What if my project already has tests?**
+A: Lean Loop works alongside existing test suites. Use it for new features and incremental improvements.
+
+**Q: Is this only for AI-assisted development?**
+A: No. The PLAN → APPLY → UNIFY cycle works for human-only teams too. AI just makes the discipline easier to maintain.
 
 ## References
 
 - [The Pragmatic Programmer](https://pragprog.com/titles/tpp20/) — Tracer Bullets concept
 - [A Philosophy of Software Design](https://www.amazon.com/Philosophy-Software-Design-John-Ousterhout/dp/1732102201) — Deep Modules
 - [Test-Driven Development: By Example](https://www.amazon.com/Test-Driven-Development-Kent-Beck/dp/0321146530) — Kent Beck's TDD approach
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+## License
+
+[MIT](LICENSE) © 2026 Max
