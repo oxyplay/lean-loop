@@ -21,7 +21,135 @@ AI coding assistants are powerful but chaotic. They write code fast, skip tests,
 
 The result: predictable, auditable, test-covered development — whether you're working solo, with a team, or alongside an AI.
 
-## Quick Start
+## 1. Beginner-Friendly Onboarding: Your First Loop
+
+Let's walk through your first complete Lean Loop cycle together. We'll build a simple `greet(name)` function that returns a greeting message. This tutorial takes about 5-10 minutes and requires no prior setup beyond having Node.js installed.
+
+### Step 1: Initialize Lean Loop in Your Project
+
+First, let's create a new project folder and set up Lean Loop:
+
+```bash
+mkdir my-first-loop && cd my-first-loop
+npm init -y  # Creates a basic package.json
+npx skills add oxyplay/lean-loop -g  # Installs the Lean Loop skill
+```
+
+This automatically creates a `.system/` folder with all the tracking files we need.
+
+### Step 2: PLAN Phase - Define What We're Building
+
+Open `.system/PLAN.md` in your editor and replace the content with:
+
+```markdown
+# Objective
+Add a `greet(name)` function that returns `Hello, {name}!`
+
+## Acceptance Criteria
+Given name="World"
+When greet() is called
+Then it returns "Hello, World!"
+
+## Tasks
+- [ ] Create greet.js with the function
+- [ ] Write a test that fails (RED)
+- [ ] Make the test pass (GREEN)
+- [ ] Improve the code if needed (REFACTOR)
+- [ ] Update STATE.md with what we learned
+```
+
+### Step 3: APPLY Phase - Red-Green-Refactor
+
+Now let's follow the TDD cycle:
+
+#### RED: Write a Failing Test
+
+Create a file called `test/greet.test.js` with this content:
+
+```javascript
+const { greet } = require('../greet');
+
+test('greets World correctly', () => {
+  expect(greet('World')).toBe('Hello, World!');
+});
+```
+
+Run the test to see it fail (this is the RED phase):
+```bash
+npm test
+# You should see a failure because greet.js doesn't exist yet
+```
+
+#### GREEN: Make It Pass
+
+Create `greet.js` with the minimal code to make the test pass:
+
+```javascript
+function greet(name) {
+  return `Hello, ${name}!`;
+}
+
+module.exports = { greet };
+```
+
+Run the test again:
+```bash
+npm test
+# Now you should see the test pass! This is the GREEN phase.
+```
+
+#### REFACTOR: Improve the Design
+
+Look at your code. Is it clear and simple? In this case, it's already good, so we can move on. (If we saw duplication or complexity, we'd improve it now while keeping the test green.)
+
+### Step 4: UNIFY Phase - Reconcile and Reflect
+
+Now we complete the loop by updating our tracking files:
+
+1. **Check that all tests pass**: We already did this with `npm test`
+2. **Verify acceptance criteria**: Our test confirms that given "World", we get "Hello, World!"
+3. **Update `.system/STATE.md`**:
+
+```markdown
+# Current Phase
+PLAN (we just completed a full loop)
+
+# Next Action
+Consider adding more test cases or move on to another feature
+
+# What We Did
+- Created greet.js function that returns a greeting
+- Wrote and passed a test for the basic case
+- Followed Red-Green-Refactor cycle
+
+# Decisions & Debt
+- No technical debt incurred
+- Decision to keep the function simple and focused
+```
+
+4. **Log the cycle in `.system/LOG.md`**:
+```markdown
+## Loop Completed: [timestamp]
+- Planned: Add greet(name) function returning Hello, {name}!
+- Actually done: Created greet.js with one test covering the basic case
+- AC satisfied: Yes - given "World", returns "Hello, World!"
+- Deferred / Debt: None
+- Next Action: Consider adding edge case tests (empty string, special characters)
+```
+
+### Step 5: Repeat the Loop
+
+Now that you've completed one full PLAN → APPLY → UNIFY cycle, you can start another! Try adding a second test case:
+
+1. Go back to `.system/PLAN.md` and add a new acceptance criterion
+2. Write the failing test (RED)
+3. Make it pass (GREEN)
+4. Refactor if needed
+5. Update STATE.md and LOG.md
+
+## Quick Start (For Experienced Users)
+
+If you just want to get started quickly:
 
 ### Install as an opencode skill
 
@@ -30,12 +158,6 @@ npx skills add oxyplay/lean-loop -g
 ```
 
 The skill auto-creates `.system/` tracking files in your project on first use.
-
-### Manual setup
-
-```bash
-cp -r .system/ /path/to/your/project/.system/
-```
 
 ### Your first loop (60 seconds)
 
