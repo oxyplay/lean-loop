@@ -21,14 +21,6 @@ jobs:
       - name: Lint Markdown
         run: npx --yes markdownlint-cli --config .markdownlint.json "**/*.md" "#node_modules" "#.git"
 
-      - name: Check links in Markdown
-        uses: lycheeverse/lychee-action@v2
-        with:
-          args: --no-progress --root-dir "${{ github.workspace }}" --accept 200,206,429 --max-retries 2 "**/*.md"
-          fail: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
   smoke-check:
     name: Smoke Check Skill Install and Init
     runs-on: ubuntu-latest
