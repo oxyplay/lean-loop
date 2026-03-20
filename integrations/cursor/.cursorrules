@@ -1,0 +1,45 @@
+# Lean Loop TDD Workflow
+
+Follow the PLAN → APPLY → UNIFY cycle. Read .system/STATE.md first.
+
+## PLAN Phase
+
+Before writing any code:
+1. Read .system/PLAN.md and .system/STATE.md
+2. Define acceptance criteria in Given/When/Then format
+3. Validate each AC with this gate:
+   - Specific Input: "Given" has concrete values
+   - Observable Action: "When" is one triggerable action
+   - Verifiable Outcome: "Then" is testable
+   - Independent: doesn't depend on other ACs
+   - No Leakage: doesn't specify internal implementation
+4. Show PASS/FAIL for each AC. Don't code until ALL pass.
+
+## APPLY Phase
+
+Red-Green-Refactor, one test at a time:
+- RED: Write ONE failing test. Show actual console output.
+- GREEN: Minimal code to pass. No future-proofing.
+- REFACTOR: Only when green. Never during RED.
+
+Rules: one behavior at a time, fewest files, test public interfaces.
+
+## UNIFY Phase
+
+After every coding session, output:
+```
+=== UNIFY ===
+1. TEST SUITE: [full output]
+2. AC VERIFICATION: [each AC → ✅/❌]
+3. PLAN vs ACTUAL: [planned vs done]
+4. DEBT: [items or None]
+5. NEXT ACTION: [one task]
+Status: PASS/FAIL
+=== END UNIFY ===
+```
+
+Then update .system/STATE.md and .system/LOG.md.
+
+## Exceptions
+
+Break TDD only for: hotfixes, legacy code, spikes. Log in .system/LOG.md.

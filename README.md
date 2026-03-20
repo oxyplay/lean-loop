@@ -121,6 +121,30 @@ Rare exceptions, all must be logged in `.system/LOG.md`:
 - **Legacy Code** — too tightly coupled for test-first approach
 - **Spikes** — exploratory code, will be thrown away
 
+## Examples
+
+Each example includes real `.system/` files showing the exact state after PLAN, APPLY, and UNIFY phases.
+
+| Example | Stack | What it builds |
+|---------|-------|---------------|
+| [greet(name)](examples/todo-cli/) | Node.js | Simple function — your first loop |
+| [POST /api/todos](examples/rest-api/) | Express + Jest | REST endpoint with validation |
+| [Toggle component](examples/react-component/) | React + RTL | Accessible UI component |
+
+Browse all: [`examples/`](examples/)
+
+## Integrations
+
+Lean Loop works with any AI coding tool. Drop-in configs for your stack:
+
+| Tool | Setup | File |
+|------|-------|------|
+| **opencode** | `npx skills add oxyplay/lean-loop -g` | [SKILL.md](skills/lean-loop/SKILL.md) |
+| **Claude Code** | Copy `CLAUDE.md` to project root | [integrations/claude-code/](integrations/claude-code/) |
+| **Cursor** | Copy `.cursorrules` to project root | [integrations/cursor/](integrations/cursor/) |
+
+See [`integrations/`](integrations/) for setup instructions.
+
 ## FAQ
 
 **Q: Do I need opencode to use this?**
