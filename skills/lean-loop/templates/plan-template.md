@@ -14,4 +14,10 @@
 |-------|--------|---------|--------|--------|
 | `path/to/file` | [Specific change] | [None / Task ID] | [Test command/check] | AC-1 |
 
+## Gate Check (AC Quality — all must PASS before APPROVED)
+| AC | Specific Input | Observable Action | Verifiable Outcome | Independent | No Leakage |
+|----|---------------|-------------------|-------------------|-------------|------------|
+| AC-1 | [concrete value] | [single triggerable action] | [assertable result] | ✅/❌ | ✅/❌ |
+| AC-2 | ... | ... | ... | ✅/❌ | ✅/❌ |
+
 **Status:** [DRAFT | APPROVED | IN-PROGRESS]

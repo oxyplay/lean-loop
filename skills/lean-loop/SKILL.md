@@ -44,9 +44,22 @@ Fill in `.system/PLAN.md` with:
 3. **Boundaries** — files/modules that must NOT change
 4. **Tasks** — broken into rows: Files | Action | Depends | Verify | AC Ref
 
-> **Gate:** If ACs are unclear, contradictory, or untestable — STOP. Refine the PLAN. Do not proceed to APPLY.
+#### PLAN Gate: AC Quality Checklist
 
-> **Rule:** Set PLAN status to `APPROVED` before starting APPLY.
+Before setting status to `APPROVED`, verify **every** AC passes all five checks. If any fail — refine the AC, do not proceed.
+
+| # | Check | Pass | Fail |
+|---|-------|------|------|
+| 1 | **Specific input** — "Given" names concrete values or exact state | `Given user is logged in` | `Given the system is ready` |
+| 2 | **Observable action** — "When" describes a single triggerable action | `When POST /api/users with {name:"X"}` | `When the user does stuff` |
+| 3 | **Verifiable outcome** — "Then" states something a test can assert | `Then response status is 201` | `Then it works correctly` |
+| 4 | **Independent** — AC can be tested without depending on another AC passing first | AC-1 and AC-2 are decoupled | AC-2 only works if AC-1 ran |
+| 5 | **No leakage** — AC doesn't prescribe internal implementation | `Then returns sorted list` | `Then uses quicksort internally` |
+
+**Gate command for AI:**
+When asked to validate the PLAN, output each AC with PASS/FAIL per row. If any FAIL, halt and ask the user to refine before setting `APPROVED`.
+
+> **Rule:** Set PLAN status to `APPROVED` only after all ACs pass the checklist.
 
 ### Phase 2: APPLY
 
@@ -76,14 +89,37 @@ After every APPLY session, perform reconciliation. No exceptions.
    - RED phase failures (if any — console facts only)
 5. Compare planned vs. actually done
 
-**UNIFY output format:**
+#### UNIFY Command for AI
+
+When the user says **"Run UNIFY"**, execute these steps in order and output results:
+
 ```
-- **Planned:** [brief description from PLAN]
-- **Actually done:** [what was actually changed]
-- **AC satisfied:** [list each AC and whether met]
-- **Deferred / Debt:** [if any]
-- **Next Action:** [exactly one task]
+=== UNIFY ===
+
+1. TEST SUITE:
+   [paste full test output here]
+
+2. AC VERIFICATION:
+   AC-1: [quote the AC] → ✅ / ❌ [why]
+   AC-2: [quote the AC] → ✅ / ❌ [why]
+   ...
+
+3. PLAN vs ACTUAL:
+   Planned: [copy Objective from PLAN.md]
+   Actually done: [list files changed, commands run]
+
+4. DEBT / DEFERRED:
+   - [anything left over or skipped, or "None"]
+
+5. NEXT ACTION:
+   [exactly one specific task]
+
+Status: PASS → proceed to next PLAN
+        FAIL → stay in APPLY, fix outstanding ACs
+=== END UNIFY ===
 ```
+
+After outputting this, update `.system/STATE.md` and append to `.system/LOG.md` automatically.
 
 ## Exceptions (When to Break TDD)
 
