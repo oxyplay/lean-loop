@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  docs-quality:
+    name: Docs Quality
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Lint Markdown
+        run: npx --yes markdownlint-cli --config .markdownlint.json "**/*.md" "#node_modules" "#.git"
+
+      - name: Check links in Markdown
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: --no-progress --base . --exclude-mail --accept 200,206,429 --max-retries 2 "**/*.md"
+          fail: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  smoke-check:
+    name: Smoke Check Skill Install and Init
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Smoke check install command
+        run: npx --yes skills add ./skills/lean-loop -g -y
+
+      - name: Smoke check initialization templates
+        run: |
+          tmp_dir="$(mktemp -d)"
+          project_dir="$tmp_dir/project"
+          mkdir -p "$project_dir/.system"
+
+          cp ./skills/lean-loop/templates/plan-template.md "$project_dir/.system/PLAN.md"
+          cp ./skills/lean-loop/templates/state-template.md "$project_dir/.system/STATE.md"
+          cp ./skills/lean-loop/templates/log-template.md "$project_dir/.system/LOG.md"
+          cp ./skills/lean-loop/templates/tdd-rules-template.md "$project_dir/.system/TDD_RULES.md"
+
+          test -s "$project_dir/.system/PLAN.md"
+          test -s "$project_dir/.system/STATE.md"
+          test -s "$project_dir/.system/LOG.md"
+          test -s "$project_dir/.system/TDD_RULES.md"

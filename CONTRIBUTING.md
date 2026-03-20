@@ -6,7 +6,7 @@ Thanks for your interest in contributing! Lean Loop is a lightweight methodology
 
 ### Report Issues
 
-- Use [GitHub Issues](../../issues) for bugs, feature requests, and questions
+- Use [GitHub Issues](https://github.com/oxyplay/lean-loop/issues) for bugs, feature requests, and questions
 - Check existing issues before creating a new one
 - Include steps to reproduce for bug reports
 
@@ -15,7 +15,7 @@ Thanks for your interest in contributing! Lean Loop is a lightweight methodology
 1. Fork the repository
 2. Create a feature branch: `git checkout -b my-improvement`
 3. Make your changes
-4. Test that the skill installs and initializes correctly: `npx skills add ./lean-loop -g`
+4. Test that the skill installs and initializes correctly: `npx skills add ./skills/lean-loop -g`
 5. Submit a pull request
 
 ### What to Contribute
