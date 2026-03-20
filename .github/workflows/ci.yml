@@ -24,7 +24,7 @@ jobs:
       - name: Check links in Markdown
         uses: lycheeverse/lychee-action@v2
         with:
-          args: --no-progress --base . --accept 200,206,429 --max-retries 2 "**/*.md"
+          args: --no-progress --root-dir "${{ github.workspace }}" --accept 200,206,429 --max-retries 2 "**/*.md"
           fail: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
